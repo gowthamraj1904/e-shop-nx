@@ -1,0 +1,33 @@
+{
+    "name": "admin-react-e2e",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "apps/admin-react-e2e/src",
+    "projectType": "application",
+    "targets": {
+        "e2e": {
+            "executor": "@nx/cypress:cypress",
+            "options": {
+                "cypressConfig": "apps/admin-react-e2e/cypress.config.ts",
+                "devServerTarget": "admin-react:serve:development",
+                "testingType": "e2e"
+            },
+            "configurations": {
+                "production": {
+                    "devServerTarget": "admin-react:serve:production"
+                },
+                "ci": {
+                    "devServerTarget": "admin-react:serve-static"
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nx/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["apps/admin-react-e2e/**/*.{js,ts}"]
+            }
+        }
+    },
+    "tags": [],
+    "implicitDependencies": ["admin-react"]
+}

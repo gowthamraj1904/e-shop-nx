@@ -1,0 +1,44 @@
+//Font Size
+$font-3xs: 0.5rem; // 8px
+$font-2xs: 0.625rem; // 10px
+$font-xs: 0.75rem; // 12px
+$font-s: 0.857rem; // 14px
+$font-m: 1rem; // 16px
+$font-l: 1.125rem; // 18px
+$font-xl: 1.312rem; // 21px
+$font-2xl: 1.5rem; // 24px
+$font-3xl: 1.875rem; //30px
+
+//Gutter
+$gutter-3xs: 0.125rem; // 2px
+$gutter-2xs: 0.3125rem; // 5px
+$gutter-xs: 0.625rem; // 10px
+$gutter-sm: 0.937rem; // 15px
+$gutter-md: 1rem; // 16px
+$gutter-lg: 1.25rem; // 20px
+$gutter-xl: 1.562rem; // 25px
+$gutter-2xl: 1.875rem; // 30px
+$gutter-3xl: 2.187rem; // 35px
+
+//Line Height
+$line-3xs: 0.5rem; // 8px
+$line-2xs: 0.625rem; // 10px
+$line-xs: 0.75rem; // 12px
+$line-s: 0.875rem; // 14px
+$line-m: 1rem; // 16px
+$line-l: 1.062rem; // 17px
+$line-xl: 1.185rem; // 19px
+$line-2xl: 1.375rem; // 22px
+$line-3xl: 1.562rem; //25px
+
+// Fixed Colors
+$primaryBGColor: #fff;
+$primaryTextColor: #585e6a;
+$secondaryTextColor: #ddd;
+$primaryBorderColor: #ddd;
+$secondaryBorderColor: #444;
+$primaryButtonBGColor: #4169e1;
+$secondaryButtonBGColor: #fff;
+$primaryButtonTextColor: #fff;
+$secondaryButtonTextColor: #444;
+$linkColor: #4169e1;

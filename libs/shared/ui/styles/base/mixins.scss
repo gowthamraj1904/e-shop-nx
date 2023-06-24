@@ -1,0 +1,12 @@
+@import 'variable';
+
+@mixin bodyText() {
+    font-weight: 400;
+    font-size: $font-s;
+}
+
+@mixin elementToCenter() {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

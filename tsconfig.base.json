@@ -1,0 +1,31 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "module": "esnext",
+        "lib": ["es2020", "dom"],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "@libs/admin/react/header": [
+                "libs/admin/react/header/src/index.ts"
+            ],
+            "@libs/client/react/header": [
+                "libs/client/react/header/src/index.ts"
+            ],
+            "@libs/shared/interfaces": ["libs/shared/interfaces/src/index.ts"],
+            "@server/controllers": ["apps/server/src/controllers/index.ts"],
+            "@server/models": ["apps/server/src/models/index.ts"],
+            "@server/routes": ["apps/server/src/routes/index.ts"]
+        }
+    },
+    "exclude": ["node_modules", "tmp"]
+}

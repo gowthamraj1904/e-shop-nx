@@ -1,0 +1,69 @@
+@import 'variable';
+@import 'mixin';
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: $primaryBGColor;
+    color: $primaryTextColor;
+    @include bodyText();
+
+    a {
+        text-decoration: none;
+        color: $linkColor;
+
+        &:hover {
+            color: darken($color: $linkColor, $amount: 10%);
+        }
+    }
+
+    button,
+    input[type='button'],
+    input[type='submit'] {
+        padding: $gutter-2xs $gutter-xs;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border-radius: 4px;
+        border-width: 1px;
+        border-style: solid;
+        transition: all linear 0.2s;
+
+        &.primary-button {
+            background-color: $primaryButtonBGColor;
+            color: $primaryButtonTextColor;
+            border-color: darken($color: $primaryButtonBGColor, $amount: 10%);
+
+            &:hover {
+                background-color: darken(
+                    $color: $primaryButtonBGColor,
+                    $amount: 10%
+                );
+            }
+        }
+
+        &.secondary-button {
+            background-color: $secondaryButtonBGColor;
+            color: $secondaryButtonTextColor;
+            border-color: $primaryButtonBGColor;
+            border-bottom: 2px solid $primaryButtonBGColor;
+
+            &:hover {
+                background-color: $primaryButtonBGColor;
+                color: $primaryButtonTextColor;
+            }
+        }
+    }
+
+    input[type='text'],
+    input[type='search'] {
+        padding: 0 10px;
+    }
+}
