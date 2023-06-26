@@ -15,6 +15,7 @@ async function getUsers(req: Request, res: Response): Promise<void> {
                 message: 'Users are empty',
                 error
             };
+
             res.status(400).json(response);
         });
 }
@@ -31,6 +32,7 @@ async function getUserById(req: Request, res: Response): Promise<void> {
                 message: 'userSchema is empty',
                 error
             };
+
             res.status(400).json(response);
         });
 }
@@ -54,6 +56,7 @@ async function addUser(req: Request, res: Response): Promise<void> {
         .save()
         .then(async (user: User) => {
             const users: User[] = await userSchema.find();
+
             res.status(201).send({ user, users });
         })
         .catch((error: Error) => {
@@ -61,6 +64,7 @@ async function addUser(req: Request, res: Response): Promise<void> {
                 message: 'The userSchema cannot be created',
                 error
             };
+
             res.status(400).json(response);
         });
 }
@@ -75,6 +79,7 @@ async function updateUser(req: Request, res: Response): Promise<void> {
         .findByIdAndUpdate({ _id: id }, body)
         .then(async (updatedUser: User) => {
             const users: User[] = await userSchema.find();
+
             res.status(200).send({ user: updatedUser, users });
         })
         .catch((error: Error) => {
@@ -82,6 +87,7 @@ async function updateUser(req: Request, res: Response): Promise<void> {
                 message: 'The userSchema cannot be updated',
                 error
             };
+
             res.status(400).json(response);
         });
 }
@@ -95,6 +101,7 @@ async function deleteUser(req: Request, res: Response): Promise<void> {
                 message: 'The user is deleted',
                 users
             };
+
             res.status(200).json(response);
         })
         .catch((error: Error) => {
@@ -102,6 +109,7 @@ async function deleteUser(req: Request, res: Response): Promise<void> {
                 message: 'The user is not deleted',
                 error
             };
+
             res.status(400).json(response);
         });
 }

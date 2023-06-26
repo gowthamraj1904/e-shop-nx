@@ -24,6 +24,7 @@ async function getProducts(req: Request, res: Response): Promise<void> {
                 message: 'Products are empty',
                 error
             };
+
             res.status(400).json(response);
         });
 }

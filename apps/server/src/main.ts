@@ -2,7 +2,12 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import * as path from 'path';
-import { usersRouter, productsRouter } from '@server/routes';
+import {
+    usersRouter,
+    productsRouter,
+    loginRouter,
+    signupRouter
+} from '@server/routes';
 import { errorHandler } from './helpers/error-handler';
 import { authJwt } from './helpers/jwt';
 
@@ -24,8 +29,11 @@ app.use(express.static('public'));
 app.use(authJwt());
 // Error Handler
 app.use(errorHandler);
+// Router
 app.use(usersRouter);
 app.use(productsRouter);
+app.use(loginRouter);
+app.use(signupRouter);
 
 mongoose
     .connect(connectionString, connectionOptions)
