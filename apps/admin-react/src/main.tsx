@@ -3,8 +3,6 @@ import * as ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './shared/router';
 
-import 'tailwindcss/tailwind.css';
-
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );

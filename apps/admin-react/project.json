@@ -23,7 +23,8 @@
                 "scripts": [],
                 "isolatedConfig": true,
                 "webpackConfig": "apps/admin-react/webpack.config.js",
-                "generatePackageJson": true
+                "generatePackageJson": true,
+                "postcssConfig": "apps/admin-react/postcss.config.js"
             },
             "configurations": {
                 "development": {
