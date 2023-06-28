@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { Product } from '@libs/shared/interfaces';
+import { IProduct } from '@libs/shared/interfaces';
 
 const productSchema: Schema = new Schema({
     name: { type: String, required: true },
@@ -30,4 +30,4 @@ productSchema.set('toJSON', {
     virtuals: true
 });
 
-export default model<Product>('Product', productSchema);
+export default model<IProduct>('Product', productSchema);

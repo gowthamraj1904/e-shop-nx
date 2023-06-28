@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { userSchema } from '@server/models';
-import { User } from '@libs/shared/interfaces';
+import { IUser } from '@libs/shared/interfaces';
 
 async function login(req: Request, res: Response): Promise<void> {
     const filter = {
@@ -11,7 +11,7 @@ async function login(req: Request, res: Response): Promise<void> {
 
     await userSchema
         .findOne(filter)
-        .then((user: User) => {
+        .then((user: IUser) => {
             if (
                 user &&
                 bcrypt.compareSync(req.body.password, user.passwordHash)

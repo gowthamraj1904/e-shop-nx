@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
-import { Header } from '@libs/admin/react/header';
+import { Header } from '@libs/admin/react/components';
 import './App.scss';
 
 export function App() {

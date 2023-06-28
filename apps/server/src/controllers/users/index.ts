@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import * as bcrypt from 'bcrypt';
 import { userSchema } from '@server/models';
-import { User } from '@libs/shared/interfaces';
+import { IUser } from '@libs/shared/interfaces';
 
 async function getUsers(req: Request, res: Response): Promise<void> {
     await userSchema
         .find()
         .select('-passwordHash')
-        .then((users: User[]) => {
+        .then((users: IUser[]) => {
             res.status(200).send(users);
         })
         .catch((error: Error) => {
@@ -24,7 +24,7 @@ async function getUserById(req: Request, res: Response): Promise<void> {
     await userSchema
         .findById(req.params.id)
         .select('-passwordHash')
-        .then((user: User) => {
+        .then((user: IUser) => {
             res.status(200).send(user);
         })
         .catch((error: Error) => {
@@ -38,7 +38,7 @@ async function getUserById(req: Request, res: Response): Promise<void> {
 }
 
 async function addUser(req: Request, res: Response): Promise<void> {
-    const body: User = req.body;
+    const body: IUser = req.body;
     const user = {
         name: body.name,
         email: body.email,
@@ -54,8 +54,8 @@ async function addUser(req: Request, res: Response): Promise<void> {
 
     await new userSchema(user)
         .save()
-        .then(async (user: User) => {
-            const users: User[] = await userSchema.find();
+        .then(async (user: IUser) => {
+            const users: IUser[] = await userSchema.find();
 
             res.status(201).send({ user, users });
         })
@@ -77,8 +77,8 @@ async function updateUser(req: Request, res: Response): Promise<void> {
 
     await userSchema
         .findByIdAndUpdate({ _id: id }, body)
-        .then(async (updatedUser: User) => {
-            const users: User[] = await userSchema.find();
+        .then(async (updatedUser: IUser) => {
+            const users: IUser[] = await userSchema.find();
 
             res.status(200).send({ user: updatedUser, users });
         })
@@ -96,7 +96,7 @@ async function deleteUser(req: Request, res: Response): Promise<void> {
     await userSchema
         .findByIdAndRemove(req.params.id)
         .then(async () => {
-            const users: User[] = await userSchema.find();
+            const users: IUser[] = await userSchema.find();
             const response = {
                 message: 'The user is deleted',
                 users

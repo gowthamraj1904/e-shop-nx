@@ -26,7 +26,7 @@ export function authJwt() {
             methods: ['GET', 'OPTIONS']
         },
         `${api}/login`,
-        `${api}/register`
+        `${api}/signup`
         // { url: allowAll } // Allow all the APIs
     ];
 

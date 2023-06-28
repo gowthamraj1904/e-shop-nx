@@ -1,7 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { Router } from '@remix-run/router';
 import App from '../app/App';
-import { ErrorPage } from '@libs/shared/react/error-page';
 
 export const router: Router = createBrowserRouter([
     {
@@ -46,6 +45,11 @@ export const router: Router = createBrowserRouter([
     },
     {
         path: '*',
-        Component: ErrorPage
+        lazy: async () => {
+            return {
+                Component: (await import('@libs/shared/react/pages'))
+                    .PageNotFound
+            };
+        }
     }
 ]);

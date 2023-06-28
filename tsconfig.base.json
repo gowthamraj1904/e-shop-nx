@@ -15,22 +15,19 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@libs/admin/react/header": [
-                "libs/admin/react/header/src/index.ts"
+            // React Admin
+            "@apps/admin/react/services": [
+                "apps/admin-react/src/services/index.ts"
             ],
-            "@libs/admin/react/login-form": [
-                "libs/admin/react/login-form/src/index.ts"
+            "@libs/admin/react/components": [
+                "libs/admin/react/components/src/index.ts"
             ],
-            "@libs/client/react/header": [
-                "libs/client/react/header/src/index.ts"
-            ],
+            // Shared
             "@libs/shared/interfaces": ["libs/shared/interfaces/src/index.ts"],
-            "@libs/shared/react/error-page": [
-                "libs/shared/react/error-page/src/index.ts"
+            "@libs/shared/react/pages": [
+                "libs/shared/react/pages/src/index.ts"
             ],
-            "@libs/shared/react/page-not-found": [
-                "libs/shared/react/page-not-found/src/index.ts"
-            ],
+            // Server
             "@server/controllers": ["apps/server/src/controllers/index.ts"],
             "@server/models": ["apps/server/src/models/index.ts"],
             "@server/routes": ["apps/server/src/routes/index.ts"]

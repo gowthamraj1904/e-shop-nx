@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { User } from '@libs/shared/interfaces';
+import { IUser } from '@libs/shared/interfaces';
 
 const userSchema: Schema = new Schema(
     {
@@ -28,4 +28,4 @@ userSchema.set('toJSON', {
     virtuals: true
 });
 
-export default model<User>('User', userSchema);
+export default model<IUser>('User', userSchema);

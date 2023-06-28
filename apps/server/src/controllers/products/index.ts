@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { productSchema } from '@server/models';
-import { Product } from '@libs/shared/interfaces';
+import { IProduct } from '@libs/shared/interfaces';
 
 async function getProducts(req: Request, res: Response): Promise<void> {
     const filter = {
@@ -16,7 +16,7 @@ async function getProducts(req: Request, res: Response): Promise<void> {
     await productSchema
         .find(filter.category.length > 0 ? filter : null)
         .populate('category')
-        .then((products: Product[]) => {
+        .then((products: IProduct[]) => {
             res.status(200).send(products);
         })
         .catch((error: Error) => {

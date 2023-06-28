@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as bcrypt from 'bcrypt';
 import { userSchema } from '@server/models';
-import { User } from '@libs/shared/interfaces';
+import { IUser } from '@libs/shared/interfaces';
 
 async function signup(req: Request, res: Response): Promise<void> {
     const user = {
@@ -24,7 +24,7 @@ async function signup(req: Request, res: Response): Promise<void> {
 
     await newUser
         .save()
-        .then((user: User) => {
+        .then((user: IUser) => {
             res.status(200).send(user);
         })
         .catch((error: Error) => {

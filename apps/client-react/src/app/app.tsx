@@ -1,11 +1,9 @@
 import { Route, Routes, Link } from 'react-router-dom';
-import { Header } from '@libs/client/react/header';
 import './app.scss';
 
 export function App() {
     return (
         <div>
-            <Header />
             <div role='navigation'>
                 <ul>
                     <li>
