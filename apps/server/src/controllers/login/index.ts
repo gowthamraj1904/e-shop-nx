@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { bcrypt } from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { userSchema } from '@server/models';
 import { User } from '@libs/shared/interfaces';

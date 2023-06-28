@@ -23,6 +23,7 @@ const connectionOptions: Record<string, boolean | string> = {
 };
 
 app.use(cors());
+app.use(express.json());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(express.static('public'));
 // JWT Token Authentication

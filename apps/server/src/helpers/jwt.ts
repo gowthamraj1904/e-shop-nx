@@ -25,8 +25,8 @@ export function authJwt() {
             url: productsUrlRegExp,
             methods: ['GET', 'OPTIONS']
         },
-        `${api}/users/login`,
-        `${api}/users/register`
+        `${api}/login`,
+        `${api}/register`
         // { url: allowAll } // Allow all the APIs
     ];
 

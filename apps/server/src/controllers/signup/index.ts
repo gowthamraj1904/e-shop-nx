@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { bcrypt } from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { userSchema } from '@server/models';
 import { User } from '@libs/shared/interfaces';
 
@@ -7,7 +7,10 @@ async function signup(req: Request, res: Response): Promise<void> {
     const user = {
         name: req.body.name,
         email: req.body.email,
-        passwordHash: bcrypt.hashSync(req.body.password, 10),
+        passwordHash: bcrypt.hashSync(
+            req.body.password,
+            bcrypt.genSaltSync(10)
+        ),
         phone: req.body.phone,
         isAdmin: req.body.isAdmin,
         street: req.body.street,
