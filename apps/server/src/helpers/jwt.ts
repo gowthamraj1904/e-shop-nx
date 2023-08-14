@@ -1,18 +1,19 @@
 import { Request } from 'express';
 import { expressjwt as jwt } from 'express-jwt';
 
-const isRevoked = async (req: Request, token) => {
-    return !token.payload.isAdmin ? true : false;
+// TODO - Add token type
+const isRevoked = async (req: Request, token): Promise<boolean> => {
+    return !token.payload?.isAdmin;
 };
 
 export function authJwt() {
-    const secret = process.env.SECRET;
-    const api = process.env.API_URL;
-    const productsImageUrlRegExp = /\/public\/uploads(.*)/;
-    const productsUrlRegExp = /\/api\/v1\/products(.*)/;
-    const categoriesUrlRegExp = /\/api\/v1\/categories(.*)/;
-    const allowAll = /(.*)/;
-    const excludeApis = [
+    const secret: string = process.env.SECRET;
+    const api: string = process.env.API_URL;
+    const productsImageUrlRegExp: RegExp = /\/public\/uploads(.*)/;
+    const productsUrlRegExp: RegExp = /\/api\/v1\/products(.*)/;
+    const categoriesUrlRegExp: RegExp = /\/api\/v1\/categories(.*)/;
+    // const allowAll: RegExp = /(.*)/;
+    const excludeApis: (string | { url: RegExp; methods: string[] })[] = [
         {
             url: productsImageUrlRegExp,
             methods: ['GET', 'OPTIONS']

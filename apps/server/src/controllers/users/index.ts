@@ -1,117 +1,35 @@
 import { Request, Response } from 'express';
-import * as bcrypt from 'bcrypt';
-import { userSchema } from '@server/models';
-import { IUser } from '@libs/shared/interfaces';
+import { UsersService } from '@server/services';
+import { IUserApiResponse } from '@server/models';
 
-async function getUsers(req: Request, res: Response): Promise<void> {
-    await userSchema
-        .find()
-        .select('-passwordHash')
-        .then((users: IUser[]) => {
-            res.status(200).send(users);
-        })
-        .catch((error: Error) => {
-            const response = {
-                message: 'Users are empty',
-                error
-            };
+async function getUsers(req: Request, res: Response): Promise<Response> {
+    const response: IUserApiResponse = await UsersService.getUsers();
 
-            res.status(400).json(response);
-        });
+    return res.json(response);
 }
 
-async function getUserById(req: Request, res: Response): Promise<void> {
-    await userSchema
-        .findById(req.params.id)
-        .select('-passwordHash')
-        .then((user: IUser) => {
-            res.status(200).send(user);
-        })
-        .catch((error: Error) => {
-            const response = {
-                message: 'userSchema is empty',
-                error
-            };
+async function getUserById(req: Request, res: Response): Promise<Response> {
+    const response: IUserApiResponse = await UsersService.getUserById(req);
 
-            res.status(400).json(response);
-        });
+    return res.json(response);
 }
 
-async function addUser(req: Request, res: Response): Promise<void> {
-    const body: IUser = req.body;
-    const user = {
-        name: body.name,
-        email: body.email,
-        passwordHash: bcrypt.hashSync(body.password, 10),
-        phone: body.phone,
-        isAdmin: body.isAdmin,
-        street: body.street,
-        apartment: body.apartment,
-        city: body.city,
-        zip: body.zip,
-        country: body.country
-    };
+async function addUser(req: Request, res: Response): Promise<Response> {
+    const response: IUserApiResponse = await UsersService.addUser(req);
 
-    await new userSchema(user)
-        .save()
-        .then(async (user: IUser) => {
-            const users: IUser[] = await userSchema.find();
-
-            res.status(201).send({ user, users });
-        })
-        .catch((error: Error) => {
-            const response = {
-                message: 'The userSchema cannot be created',
-                error
-            };
-
-            res.status(400).json(response);
-        });
+    return res.json(response);
 }
 
-async function updateUser(req: Request, res: Response): Promise<void> {
-    const {
-        params: { id },
-        body
-    } = req;
+async function updateUser(req: Request, res: Response): Promise<Response> {
+    const response: IUserApiResponse = await UsersService.updateUser(req);
 
-    await userSchema
-        .findByIdAndUpdate({ _id: id }, body)
-        .then(async (updatedUser: IUser) => {
-            const users: IUser[] = await userSchema.find();
-
-            res.status(200).send({ user: updatedUser, users });
-        })
-        .catch((error: Error) => {
-            const response = {
-                message: 'The userSchema cannot be updated',
-                error
-            };
-
-            res.status(400).json(response);
-        });
+    return res.json(response);
 }
 
-async function deleteUser(req: Request, res: Response): Promise<void> {
-    await userSchema
-        .findByIdAndRemove(req.params.id)
-        .then(async () => {
-            const users: IUser[] = await userSchema.find();
-            const response = {
-                message: 'The user is deleted',
-                users
-            };
+async function deleteUser(req: Request, res: Response): Promise<Response> {
+    const response: IUserApiResponse = await UsersService.deleteUser(req);
 
-            res.status(200).json(response);
-        })
-        .catch((error: Error) => {
-            const response = {
-                message: 'The user is not deleted',
-                error
-            };
-
-            res.status(400).json(response);
-        });
+    return res.json(response);
 }
 
 export { getUsers, getUserById, addUser, updateUser, deleteUser };

@@ -1,32 +1,13 @@
 import { Request, Response } from 'express';
-import { productSchema } from '@server/models';
-import { IProduct } from '@libs/shared/interfaces';
+import { ProductsService } from '@server/services';
+import { IProductsApiResponse } from '@server/models';
 
-async function getProducts(req: Request, res: Response): Promise<void> {
-    const filter = {
-        category: []
-    };
+async function getProducts(req: Request, res: Response): Promise<Response> {
+    const response: IProductsApiResponse = await ProductsService.getProducts(
+        req
+    );
 
-    // Filter based on the query params
-    const categories = req.query?.categories as string;
-    if (categories) {
-        filter.category = categories.split(',');
-    }
-
-    await productSchema
-        .find(filter.category.length > 0 ? filter : null)
-        .populate('category')
-        .then((products: IProduct[]) => {
-            res.status(200).send(products);
-        })
-        .catch((error: Error) => {
-            const response = {
-                message: 'Products are empty',
-                error
-            };
-
-            res.status(400).json(response);
-        });
+    return res.json(response);
 }
 
 export { getProducts };

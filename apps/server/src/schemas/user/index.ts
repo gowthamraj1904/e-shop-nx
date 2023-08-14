@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { IUser } from '@libs/shared/interfaces';
 
-const userSchema: Schema = new Schema(
+const UserSchema: Schema = new Schema(
     {
         name: { type: String, required: true },
         email: { type: String, required: true },
@@ -20,12 +20,12 @@ const userSchema: Schema = new Schema(
     { timestamps: true }
 );
 
-userSchema.virtual('id').get(function () {
+UserSchema.virtual('id').get(function () {
     return this._id;
 });
 
-userSchema.set('toJSON', {
+UserSchema.set('toJSON', {
     virtuals: true
 });
 
-export default model<IUser>('User', userSchema);
+export default model<IUser>('User', UserSchema);

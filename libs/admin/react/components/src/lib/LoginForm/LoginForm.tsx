@@ -1,20 +1,20 @@
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import './LoginForm.scss';
 import { ILogin } from '@libs/shared/interfaces';
+import './LoginForm.scss';
 
 export interface LoginFormProps {
     onLogin: (loginInfo: ILogin) => void;
 }
 
-export function LoginForm(props: LoginFormProps) {
+export function LoginForm({ onLogin }: LoginFormProps) {
     const {
         register,
         handleSubmit,
         formState: { errors }
     } = useForm<ILogin>();
 
-    const onSubmit = handleSubmit((data) => props.onLogin(data));
+    const onSubmit = handleSubmit((data) => onLogin(data));
 
     return (
         <div className='w-full max-w-xs login-form-wrapper'>
@@ -38,7 +38,7 @@ export function LoginForm(props: LoginFormProps) {
                         type='text'
                         data-focused='true'
                         placeholder='Email'
-                        aria-invalid={errors.email ? true : false}
+                        aria-invalid={!!errors.email}
                         {...register('email', { required: true })}
                     />
                     {errors.email && (
@@ -61,7 +61,7 @@ export function LoginForm(props: LoginFormProps) {
                         id='password'
                         type='password'
                         placeholder='******************'
-                        aria-invalid={errors.password ? true : false}
+                        aria-invalid={!!errors.password}
                         {...register('password', { required: true })}
                     />
                     {errors.password && (

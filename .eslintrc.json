@@ -10,7 +10,14 @@
                     "error",
                     {
                         "enforceBuildableLibDependency": true,
-                        "allow": [],
+                        "allow": [
+                            "@server/services",
+                            "@server/models",
+                            "@server/controllers",
+                            "@server/schemas",
+                            "@server/routes",
+                            "@apps/admin/react/services"
+                        ],
                         "depConstraints": [
                             {
                                 "sourceTag": "*",

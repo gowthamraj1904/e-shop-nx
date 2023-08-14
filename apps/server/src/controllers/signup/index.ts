@@ -1,40 +1,11 @@
 import { Request, Response } from 'express';
-import * as bcrypt from 'bcrypt';
-import { userSchema } from '@server/models';
-import { IUser } from '@libs/shared/interfaces';
+import { SignupService } from '@server/services';
+import { ISignupApiResponse } from '@server/models';
 
-async function signup(req: Request, res: Response): Promise<void> {
-    const user = {
-        name: req.body.name,
-        email: req.body.email,
-        passwordHash: bcrypt.hashSync(
-            req.body.password,
-            bcrypt.genSaltSync(10)
-        ),
-        phone: req.body.phone,
-        isAdmin: req.body.isAdmin,
-        street: req.body.street,
-        apartment: req.body.apartment,
-        city: req.body.city,
-        zip: req.body.zip,
-        country: req.body.country,
-        profilePhoto: req.body.profilePhoto
-    };
-    const newUser = new userSchema(user);
+async function signup(req: Request, res: Response): Promise<Response> {
+    const response: ISignupApiResponse = await SignupService.signup(req);
 
-    await newUser
-        .save()
-        .then((user: IUser) => {
-            res.status(200).send(user);
-        })
-        .catch((error: Error) => {
-            const response = {
-                message: 'The User cannot be created',
-                error
-            };
-
-            res.status(400).json(response);
-        });
+    return res.json(response);
 }
 
 export { signup };

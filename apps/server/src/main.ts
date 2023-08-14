@@ -2,12 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import * as path from 'path';
-import {
-    usersRouter,
-    productsRouter,
-    loginRouter,
-    signupRouter
-} from '@server/routes';
+import router from '@server/routes';
 import { errorHandler } from './helpers/error-handler';
 import { authJwt } from './helpers/jwt';
 
@@ -31,10 +26,7 @@ app.use(authJwt());
 // Error Handler
 app.use(errorHandler);
 // Router
-app.use(usersRouter);
-app.use(productsRouter);
-app.use(loginRouter);
-app.use(signupRouter);
+app.use(router);
 
 mongoose
     .connect(connectionString, connectionOptions)
@@ -44,6 +36,6 @@ mongoose
         );
         server.on('error', console.error);
     })
-    .catch((error: unknown): void => {
+    .catch((error: Error): void => {
         throw error;
     });

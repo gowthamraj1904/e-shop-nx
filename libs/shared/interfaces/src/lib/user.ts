@@ -13,5 +13,5 @@ export interface IUser {
     country: string;
     profilePhoto?: null;
     dateCreated?: Date;
-    dateModified: Date;
+    dateModified?: Date;
 }
