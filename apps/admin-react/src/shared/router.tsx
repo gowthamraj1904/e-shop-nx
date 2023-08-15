@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { Router } from '@remix-run/router';
+import { PageNotFound } from '@libs/shared/react/pages';
 import App from '../components/App';
 import { Layout } from '../pages/Layout';
 import { AuthLayout } from '../pages/AuthLayout';
-import { PageNotFound } from '@libs/shared/react/pages';
 
 export const router: Router = createBrowserRouter([
     {
@@ -38,7 +38,7 @@ export const router: Router = createBrowserRouter([
                         }
                     },
                     {
-                        path: '/user/:id',
+                        path: '/user/:id?',
                         lazy: async () => {
                             return {
                                 Component: (await import('../pages/User')).User

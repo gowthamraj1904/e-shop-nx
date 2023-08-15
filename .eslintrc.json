@@ -16,7 +16,10 @@
                             "@server/controllers",
                             "@server/schemas",
                             "@server/routes",
-                            "@apps/admin/react/services"
+                            "@apps/admin/react/services",
+                            "@libs/admin/react/components",
+                            "@libs/shared/react/pages",
+                            "@libs/shared/interfaces"
                         ],
                         "depConstraints": [
                             {

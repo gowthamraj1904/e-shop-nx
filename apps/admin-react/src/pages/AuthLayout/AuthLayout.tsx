@@ -1,11 +1,8 @@
-import './AuthLayout.scss';
 import { JSX } from 'react';
 import { Outlet } from 'react-router-dom';
+import './AuthLayout.scss';
 
-/* eslint-disable-next-line */
-export interface AuthLayoutProps {}
-
-function AuthLayout(props: AuthLayoutProps): JSX.Element {
+function AuthLayout(): JSX.Element {
     return <Outlet />;
 }
 

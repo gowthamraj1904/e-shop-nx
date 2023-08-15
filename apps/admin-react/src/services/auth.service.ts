@@ -1,11 +1,17 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import { ILoginApiResponse } from '@server/models';
 import { ILogin } from '@libs/shared/interfaces';
-import { constants } from '../shared/constants';
+import { CONSTANTS } from '../shared/constants';
 
-const AuthService = {
-    login: (loginInfo: ILogin) => {
-        return axios.post(`${constants.apiURL}/login`, loginInfo);
-    }
-};
+async function login(loginInfo: ILogin): Promise<ILoginApiResponse> {
+    const response: AxiosResponse = await axios({
+        method: 'post',
+        baseURL: `${CONSTANTS.apiURL}`,
+        url: `/login`,
+        data: loginInfo
+    });
 
-export { AuthService };
+    return response.data;
+}
+
+export { login };

@@ -1,14 +1,8 @@
+import { JSX } from 'react';
 import './Dashboard.scss';
 
-/* eslint-disable-next-line */
-export interface DashboardProps {}
-
-function Dashboard(props: DashboardProps) {
-    return (
-        <div>
-            <h1>Welcome to Dashboard!</h1>
-        </div>
-    );
+function Dashboard(): JSX.Element {
+    return <h1>Welcome to Dashboard!</h1>;
 }
 
 export default Dashboard;

@@ -1,4 +1,4 @@
-export const constants = {
+export const CONSTANTS = {
     apiURL: 'http://localhost:3000/api/v1',
     pages: {
         login: '/login',

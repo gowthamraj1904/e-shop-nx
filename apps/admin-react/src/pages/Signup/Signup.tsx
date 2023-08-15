@@ -1,14 +1,8 @@
+import { JSX } from 'react';
 import './Signup.scss';
 
-/* eslint-disable-next-line */
-export interface SignupProps {}
-
-export function Signup(props: SignupProps) {
-    return (
-        <div>
-            <h1>Welcome to Signup!</h1>
-        </div>
-    );
+function Signup(): JSX.Element {
+    return <h1>Welcome to Signup!</h1>;
 }
 
 export default Signup;

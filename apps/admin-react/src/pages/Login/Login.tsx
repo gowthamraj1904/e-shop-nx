@@ -1,23 +1,23 @@
-import { useNavigate } from 'react-router-dom';
+import { JSX } from 'react';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { LoginForm } from '@libs/admin/react/components';
 import { AuthService } from '@apps/admin/react/services';
 import { ILogin } from '@libs/shared/interfaces';
-import { constants } from '../../shared/constants';
+import { ILoginApiResponse } from '@server/models';
+import { CONSTANTS } from '../../shared/constants';
 import './Login.scss';
 
-export function Login() {
-    const navigate = useNavigate();
+export function Login(): JSX.Element {
+    const navigate: NavigateFunction = useNavigate();
 
-    async function handleLogin(loginInfo: ILogin) {
-        try {
-            const loginResponse = await AuthService.login(loginInfo);
+    async function handleLogin(loginInfo: ILogin): Promise<void> {
+        const loginResponse: ILoginApiResponse = await AuthService.login(
+            loginInfo
+        );
 
-            if (loginResponse) {
-                sessionStorage.setItem('token', loginResponse.data.token);
-                navigate(constants.pages.dashboard);
-            }
-        } catch (error) {
-            console.error({ error });
+        if (loginResponse) {
+            sessionStorage.setItem('token', loginResponse?.token as string);
+            navigate(CONSTANTS.pages.dashboard);
         }
     }
 
