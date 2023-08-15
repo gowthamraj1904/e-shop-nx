@@ -1,1 +1,1 @@
-export * from './lib/PageNotFound/PageNotFound';
+export {default as PageNotFound} from './lib/PageNotFound/PageNotFound';

@@ -1,14 +1,9 @@
 import { Outlet } from 'react-router-dom';
-import { Header } from '@libs/admin/react/components';
+import { JSX } from 'react';
 import './App.scss';
 
-export function App() {
-    return (
-        <div>
-            <Header />
-            <Outlet />
-        </div>
-    );
+export function App(): JSX.Element {
+    return <Outlet />;
 }
 
 export default App;
