@@ -1,14 +1,15 @@
-import { Request } from 'express';
+import { NextFunction, Request } from 'express';
 import { ProductSchema } from '@server/schemas';
 import { IProductsApiResponse } from '@server/models';
 
-async function getProducts(req: Request): Promise<IProductsApiResponse> {
-    let response: IProductsApiResponse;
-    const filter: { category: string[] } = {
-        category: []
-    };
-
+async function getProducts(
+    req: Request,
+    next: NextFunction
+): Promise<IProductsApiResponse> {
     try {
+        const filter: { category: string[] } = {
+            category: []
+        };
         // Filter based on the query params
         const categories: string = req.query?.categories as string;
 
@@ -20,28 +21,16 @@ async function getProducts(req: Request): Promise<IProductsApiResponse> {
             filter.category.length > 0 ? filter : null
         ).populate('category');
 
-        if (products?.length) {
-            response = {
-                status: 200,
-                message: 'Success',
-                products
-            };
-        } else {
-            response = {
-                status: 400,
-                message: 'Products are empty',
-                products
-            };
-        }
-    } catch (error: unknown) {
-        response = {
-            status: 400,
-            message: 'error',
-            error
+        const response: IProductsApiResponse = {
+            status: 200,
+            message: 'Success',
+            products
         };
-    }
 
-    return response;
+        return response;
+    } catch (error: unknown) {
+        next(error);
+    }
 }
 
 export { getProducts };

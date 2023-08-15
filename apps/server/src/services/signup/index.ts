@@ -1,13 +1,15 @@
-import { Request } from 'express';
+import { NextFunction, Request } from 'express';
 import * as bcrypt from 'bcrypt';
 import { IUser } from '@libs/shared/interfaces';
 import { UserSchema } from '@server/schemas';
 import { ISignupApiResponse } from '@server/models';
 
-async function signup(req: Request): Promise<ISignupApiResponse> {
-    let response: ISignupApiResponse;
-
+async function signup(
+    req: Request,
+    next: NextFunction
+): Promise<ISignupApiResponse> {
     try {
+        let response: ISignupApiResponse;
         const {
             name,
             email,
@@ -50,15 +52,11 @@ async function signup(req: Request): Promise<ISignupApiResponse> {
                 message: 'The User cannot be created'
             };
         }
-    } catch (error: unknown) {
-        response = {
-            status: 400,
-            message: 'error',
-            error
-        };
-    }
 
-    return response;
+        return response;
+    } catch (error: unknown) {
+        next(error);
+    }
 }
 
 export { signup };

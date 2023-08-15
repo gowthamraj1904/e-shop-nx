@@ -1,13 +1,20 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { ProductsService } from '@server/services';
 import { IProductsApiResponse } from '@server/models';
 
-async function getProducts(req: Request, res: Response): Promise<Response> {
+async function getProducts(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<Response> {
     const response: IProductsApiResponse = await ProductsService.getProducts(
-        req
+        req,
+        next
     );
 
-    return res.json(response);
+    if (response) {
+        return res.json(response);
+    }
 }
 
 export { getProducts };

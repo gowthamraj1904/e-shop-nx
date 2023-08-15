@@ -3,8 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import * as path from 'path';
 import router from '@server/routes';
-import { errorHandler } from './helpers/error-handler';
-import { authJwt } from './helpers/jwt';
+import { authJwt } from './middlewares';
 
 const app = express();
 
@@ -23,10 +22,10 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(express.static('public'));
 // JWT Token Authentication
 app.use(authJwt());
-// Error Handler
-app.use(errorHandler);
 // Router
 app.use(router);
+// Error Handler
+// app.use(errorHandler);
 
 mongoose
     .connect(connectionString, connectionOptions)

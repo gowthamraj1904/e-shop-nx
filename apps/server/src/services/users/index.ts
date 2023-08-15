@@ -1,35 +1,31 @@
 import * as bcrypt from 'bcrypt';
-import { Request } from 'express';
+import { NextFunction, Request } from 'express';
 import { IUser } from '@libs/shared/interfaces';
 import { UserSchema } from '@server/schemas';
 import { IUserApiResponse } from '@server/models';
 
-async function getUsers(): Promise<IUserApiResponse> {
-    let response: IUserApiResponse;
-
+async function getUsers(next: NextFunction): Promise<IUserApiResponse> {
     try {
         const users: IUser[] = await UserSchema.find().select('-passwordHash');
 
-        response = {
+        const response: IUserApiResponse = {
             status: 200,
             message: 'Success',
             users
         };
-    } catch (error: unknown) {
-        response = {
-            status: 400,
-            message: 'error',
-            error
-        };
-    }
 
-    return response;
+        return response;
+    } catch (error: unknown) {
+        next(error);
+    }
 }
 
-async function getUserById(req: Request): Promise<IUserApiResponse> {
-    let response: IUserApiResponse;
-
+async function getUserById(
+    req: Request,
+    next: NextFunction
+): Promise<IUserApiResponse> {
     try {
+        let response: IUserApiResponse;
         const { id } = req.params;
         const user: IUser = await UserSchema.findById(id).select(
             '-passwordHash'
@@ -47,20 +43,17 @@ async function getUserById(req: Request): Promise<IUserApiResponse> {
                 message: 'User not found'
             };
         }
-    } catch (error: unknown) {
-        response = {
-            status: 400,
-            message: 'error',
-            error
-        };
-    }
 
-    return response;
+        return response;
+    } catch (error: unknown) {
+        next(error);
+    }
 }
 
-async function addUser(req: Request): Promise<IUserApiResponse> {
-    let response: IUserApiResponse;
-
+async function addUser(
+    req: Request,
+    next: NextFunction
+): Promise<IUserApiResponse> {
     try {
         const {
             name,
@@ -91,26 +84,23 @@ async function addUser(req: Request): Promise<IUserApiResponse> {
         const savedUser: IUser = await new UserSchema(user).save();
         const users: IUser[] = await UserSchema.find();
 
-        response = {
+        const response: IUserApiResponse = {
             status: 200,
             message: 'Success',
             user: savedUser,
             users
         };
-    } catch (error: unknown) {
-        response = {
-            status: 400,
-            message: 'error',
-            error
-        };
-    }
 
-    return response;
+        return response;
+    } catch (error: unknown) {
+        next(error);
+    }
 }
 
-async function updateUser(req: Request): Promise<IUserApiResponse> {
-    let response: IUserApiResponse;
-
+async function updateUser(
+    req: Request,
+    next: NextFunction
+): Promise<IUserApiResponse> {
     try {
         const { id } = req.params;
         const { body } = req;
@@ -121,44 +111,37 @@ async function updateUser(req: Request): Promise<IUserApiResponse> {
         );
         const users: IUser[] = await UserSchema.find();
 
-        response = {
+        const response: IUserApiResponse = {
             status: 200,
             message: 'Success',
             user: updatedUser,
             users
         };
-    } catch (error: unknown) {
-        response = {
-            status: 400,
-            message: 'error',
-            error
-        };
-    }
 
-    return response;
+        return response;
+    } catch (error: unknown) {
+        next(error);
+    }
 }
 
-async function deleteUser(req: Request): Promise<IUserApiResponse> {
-    let response: IUserApiResponse;
-
+async function deleteUser(
+    req: Request,
+    next: NextFunction
+): Promise<IUserApiResponse> {
     try {
         await UserSchema.findByIdAndRemove(req.params.id);
         const users: IUser[] = await UserSchema.find();
 
-        response = {
+        const response: IUserApiResponse = {
             status: 200,
             message: 'The user is deleted',
             users
         };
-    } catch (error: unknown) {
-        response = {
-            status: 400,
-            message: 'error',
-            error
-        };
-    }
 
-    return response;
+        return response;
+    } catch (error: unknown) {
+        next(error);
+    }
 }
 
 export { getUsers, getUserById, addUser, updateUser, deleteUser };

@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { Request } from 'express';
+import { NextFunction, Request } from 'express';
 import { IUser } from '@libs/shared/interfaces';
 import { UserSchema } from '@server/schemas';
 import { ILoginApiResponse } from '@server/models';
@@ -45,11 +45,13 @@ async function validateUser(
     return response;
 }
 
-async function login(req: Request): Promise<ILoginApiResponse> {
-    let response: ILoginApiResponse;
-
+async function login(
+    req: Request,
+    next: NextFunction
+): Promise<ILoginApiResponse> {
     try {
         const { email, password } = req.body;
+        let response: ILoginApiResponse;
 
         const filter: { email: string } = {
             email
@@ -65,15 +67,11 @@ async function login(req: Request): Promise<ILoginApiResponse> {
                 message: 'The User not found'
             };
         }
-    } catch (error: unknown) {
-        response = {
-            status: 400,
-            message: 'error',
-            error
-        };
-    }
 
-    return response;
+        return response;
+    } catch (error: unknown) {
+        next(error);
+    }
 }
 
 export { login };

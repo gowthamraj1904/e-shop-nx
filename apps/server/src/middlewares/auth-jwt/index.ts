@@ -1,19 +1,20 @@
 import { Request } from 'express';
-import { expressjwt as jwt } from 'express-jwt';
+import { expressjwt, Params } from 'express-jwt';
+
+type ExcludeApi = string | { url: RegExp; methods: string[] };
 
 // TODO - Add token type
 const isRevoked = async (req: Request, token): Promise<boolean> => {
     return !token.payload?.isAdmin;
 };
 
-export function authJwt() {
-    const secret: string = process.env.SECRET;
+function getApiList(): ExcludeApi[] {
     const api: string = process.env.API_URL;
     const productsImageUrlRegExp: RegExp = /\/public\/uploads(.*)/;
     const productsUrlRegExp: RegExp = /\/api\/v1\/products(.*)/;
     const categoriesUrlRegExp: RegExp = /\/api\/v1\/categories(.*)/;
     // const allowAll: RegExp = /(.*)/;
-    const excludeApis: (string | { url: RegExp; methods: string[] })[] = [
+    const excludeApis: ExcludeApi[] = [
         {
             url: productsImageUrlRegExp,
             methods: ['GET', 'OPTIONS']
@@ -31,12 +32,21 @@ export function authJwt() {
         // { url: allowAll } // Allow all the APIs
     ];
 
-    return jwt({
+    return excludeApis;
+}
+
+function authJwt() {
+    const secret: string = process.env.SECRET;
+    const excludeApis: ExcludeApi[] = getApiList();
+    const jwtOptions: Params = {
         secret,
         algorithms: ['HS256'],
         isRevoked: isRevoked
-    }).unless({
-        // Exclude these APIs from authorization
-        path: excludeApis
+    };
+
+    return expressjwt(jwtOptions).unless({
+        path: excludeApis // Exclude these APIs from authorization
     });
 }
+
+export { authJwt };
