@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { Router } from '@remix-run/router';
-import App from '../app/App';
+import App from '../components/App';
 
 export const router: Router = createBrowserRouter([
     {
@@ -21,7 +21,7 @@ export const router: Router = createBrowserRouter([
                 path: '/users',
                 lazy: async () => {
                     return {
-                        Component: (await import('../pages/Users/Users')).Users
+                        Component: (await import('../pages/Users')).Users
                     };
                 }
             }
@@ -31,7 +31,7 @@ export const router: Router = createBrowserRouter([
         path: '/signup',
         lazy: async () => {
             return {
-                Component: (await import('../pages/Signup/Signup')).Signup
+                Component: (await import('../pages/Signup')).Signup
             };
         }
     },
@@ -39,7 +39,7 @@ export const router: Router = createBrowserRouter([
         path: '/login',
         lazy: async () => {
             return {
-                Component: (await import('../pages/Login/Login')).Login
+                Component: (await import('../pages/Login')).Login
             };
         }
     },
