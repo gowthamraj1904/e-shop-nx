@@ -1,12 +1,40 @@
-import { NextFunction, Request, Response, Router } from 'express';
+import { Router } from 'express';
 import { loginRouter } from './login';
 import { signupRouter } from './signup';
 import { usersRouter } from './users';
 import { productsRouter } from './products';
-import { errorHandler } from '../middlewares';
+import * as CONSTANTS from '../constants';
 
 const router: Router = Router();
-const apiURL: string = process.env.API_URL;
+const apiURL: string = CONSTANTS.API_URL;
+
+// router.get(
+//     '/next',
+//     (req, res, next) => {
+//         res.status(404);
+//         next();
+//     },
+//     (req, res) => {
+//         res.send('Api not found');
+//     }
+// );
+
+// function one(req, res, next) {
+//     console.log('one');
+//     next();
+// }
+//
+// function two(req, res) {
+//     console.log('one');
+//     res.send('Chain finished');
+// }
+//
+// router.get('/chain', [one, two]);
+
+// router.get('/*', (req, res) => {
+//     res.status(404).send('API not found');
+// });
+
 const routers: Router[] = [
     loginRouter,
     signupRouter,
@@ -15,9 +43,5 @@ const routers: Router[] = [
 ];
 
 router.use(apiURL, routers);
-
-router.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    errorHandler.handleError(err, res, next);
-});
 
 export default router;

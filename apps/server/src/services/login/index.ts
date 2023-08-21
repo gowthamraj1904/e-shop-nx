@@ -17,9 +17,9 @@ async function validateUser(
         const token: string = jwt.sign(
             // Keep these user details in the token
             {
-                userId: user.id,
+                id: user.id,
                 email: user.email,
-                userName: user.name,
+                name: user.name,
                 isAdmin: user.isAdmin
             },
             secret,

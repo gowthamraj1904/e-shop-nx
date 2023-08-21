@@ -1,4 +1,4 @@
-import { errorHandler } from '../middlewares';
+// import { errorHandler } from '../middlewares';
 
 // TODO - Remove any type
 process.on('unhandledRejection', (reason: Error | any) => {
@@ -10,5 +10,5 @@ process.on('unhandledRejection', (reason: Error | any) => {
 process.on('uncaughtException', (error: Error) => {
     console.log(`Uncaught Exception: ${error.message}`);
 
-    errorHandler.handleError(error);
+    // errorHandler.handleError(error);
 });

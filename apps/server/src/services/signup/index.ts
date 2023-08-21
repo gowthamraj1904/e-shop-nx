@@ -16,11 +16,7 @@ async function signup(
             password,
             phone,
             isAdmin,
-            street,
-            apartment,
-            city,
-            zip,
-            country,
+            address,
             profilePhoto
         } = req.body;
         const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -30,11 +26,7 @@ async function signup(
             passwordHash,
             phone,
             isAdmin,
-            street,
-            apartment,
-            city,
-            zip,
-            country,
+            address,
             profilePhoto
         };
         const newUser = new UserSchema(user);

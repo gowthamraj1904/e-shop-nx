@@ -1,14 +1,14 @@
 import { Schema, model } from 'mongoose';
 import { IProduct } from '@libs/shared/interfaces';
 
-const ProductSchema: Schema = new Schema({
+const productSchema: Schema = new Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     richDescription: { type: String, default: '' },
     brand: { type: String, default: '' },
     price: { type: Number, default: 0 },
     image: { type: String, default: '' },
-    images: [{ type: String }],
+    images: [String],
     category: {
         type: Schema.Types.ObjectId,
         ref: 'Category',
@@ -22,12 +22,12 @@ const ProductSchema: Schema = new Schema({
 });
 
 // Default key for the id is "_id" so, we can create a virtual key "id"
-ProductSchema.virtual('id').get(function () {
+productSchema.virtual('id').get(function () {
     return this._id;
 });
 
-ProductSchema.set('toJSON', {
+productSchema.set('toJSON', {
     virtuals: true
 });
 
-export default model<IProduct>('Product', ProductSchema);
+export default model<IProduct>('Product', productSchema);

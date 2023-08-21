@@ -1,90 +1,92 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
-enum HttpCode {
-    OK = 200,
-    NO_CONTENT = 204,
-    BAD_REQUEST = 400,
-    UNAUTHORIZED = 401,
-    NOT_FOUND = 404,
-    INTERNAL_SERVER_ERROR = 500
-}
-
-interface AppErrorArgs {
-    name?: string;
-    httpCode: HttpCode;
-    description: string;
-    isOperational?: boolean;
-}
-
-class AppError extends Error {
-    public readonly name: string;
-    public readonly httpCode: HttpCode;
-    public readonly isOperational: boolean = true;
-
-    constructor(args: AppErrorArgs) {
-        super(args.description);
-
-        Object.setPrototypeOf(this, new.target.prototype);
-
-        this.name = args.name || 'Error';
-        this.httpCode = args.httpCode;
-
-        if (args.isOperational !== undefined) {
-            this.isOperational = args.isOperational;
-        }
-
-        Error.captureStackTrace(this);
-    }
-}
-
-class ErrorHandler {
-    private isTrustedError(error: Error): boolean {
-        if (error instanceof AppError) {
-            return error.isOperational;
-        }
-
-        return false;
-    }
-
-    private handleTrustedError(error: AppError, response: Response): void {
-        response.status(error.httpCode).json({ message: error.message });
-    }
-
-    private handleCriticalError(
-        error: Error | AppError,
-        response?: Response
-    ): void {
-        console.log({ error, response });
-        if (response) {
-            response
-                .status(HttpCode.INTERNAL_SERVER_ERROR)
-                .json({ message: 'Internal server error' });
-        }
-
-        console.log('Application encountered a critical error. Exiting');
-        process.exit(1);
-    }
-
-    public handleError(
-        error: Error | AppError,
-        response?: Response,
-        next?: NextFunction
-    ): void {
-        if (this.isTrustedError(error) && response) {
-            this.handleTrustedError(error as AppError, response);
-        } else {
-            this.handleCriticalError(error, response);
-        }
-    }
-}
-
-const errorHandler: ErrorHandler = new ErrorHandler();
-
-export { HttpCode, AppErrorArgs, AppError, errorHandler };
-
+// enum HttpCode {
+//     OK = 200,
+//     NO_CONTENT = 204,
+//     BAD_REQUEST = 400,
+//     UNAUTHORIZED = 401,
+//     NOT_FOUND = 404,
+//     INTERNAL_SERVER_ERROR = 500
+// }
 //
-// // Error object used in error handling middleware function
-// class AppError1 extends Error {
+// interface AppErrorArgs {
+//     name?: string;
+//     httpCode: HttpCode;
+//     description: string;
+//     isOperational?: boolean;
+// }
+//
+// class AppError extends Error {
+//     public readonly name: string;
+//     public readonly httpCode: HttpCode;
+//     public readonly isOperational: boolean = true;
+//
+//     constructor(args: AppErrorArgs) {
+//         super(args.description);
+//
+//         Object.setPrototypeOf(this, new.target.prototype);
+//
+//         this.name = args.name || 'Error';
+//         this.httpCode = args.httpCode;
+//
+//         if (args.isOperational !== undefined) {
+//             this.isOperational = args.isOperational;
+//         }
+//
+//         Error.captureStackTrace(this);
+//     }
+// }
+//
+// class ErrorHandler {
+//     private isTrustedError(error: Error): boolean {
+//         if (error instanceof AppError) {
+//             return error.isOperational;
+//         }
+//
+//         return false;
+//     }
+//
+//     private handleTrustedError(error: AppError, response: Response): void {
+//         response.status(error.httpCode).json({ message: error.message });
+//     }
+//
+//     private handleCriticalError(
+//         error: Error | AppError,
+//         response?: Response
+//     ): void {
+//         console.log({ error, response });
+//         if (response) {
+//             response
+//                 .status(HttpCode.INTERNAL_SERVER_ERROR)
+//                 .json({ message: 'Internal server error' });
+//         }
+//
+//         console.log('Application encountered a critical error. Exiting');
+//         process.exit(1);
+//     }
+//
+//     public handleError(
+//         error: Error | AppError,
+//         response?: Response,
+//         next?: NextFunction
+//     ): void {
+//         if (this.isTrustedError(error) && response) {
+//             this.handleTrustedError(error as AppError, response);
+//         } else {
+//             this.handleCriticalError(error, response);
+//         }
+//
+//         next();
+//     }
+// }
+//
+// const errorHandler: ErrorHandler = new ErrorHandler();
+//
+// export { HttpCode, AppErrorArgs, AppError, errorHandler };
+
+//--------------------------------------------------
+// Error object used in error handling middleware function
+// class AppError extends Error {
 //     statusCode: number;
 //
 //     constructor(statusCode: number, message: string) {
@@ -165,7 +167,7 @@ export { HttpCode, AppErrorArgs, AppError, errorHandler };
 //     next: NextFunction
 // ) {
 //     console.log(`errorHandler: ${error.message}`);
-//     const errStatus = error.statusCode || 500;
+//     const errStatus = error?.statusCode || 500;
 //     const errMsg = error.message || 'Something went wrong';
 //     res.status(errStatus).json({
 //         success: false,
@@ -206,3 +208,18 @@ export { HttpCode, AppErrorArgs, AppError, errorHandler };
 //     requireJsonContent,
 //     errorHandler
 // };
+
+//--------------------------------------------------
+
+function errorHandler(
+    error: Error,
+    req?: Request,
+    res?: Response,
+    next?: NextFunction
+): void {
+    console.error("message", error.message);
+    res.status(500).send(error.message);
+    next();
+}
+
+export { errorHandler };

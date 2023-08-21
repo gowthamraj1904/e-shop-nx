@@ -30,6 +30,10 @@ async function getUserById(
         const user: IUser = await UserSchema.findById(id).select(
             '-passwordHash'
         );
+        // const userN: IUser = await UserSchema.where('id')
+        //     .equals(id)
+        //     .select('-passwordHash')
+        //     .limit(2);
 
         if (user) {
             response = {
@@ -55,18 +59,7 @@ async function addUser(
     next: NextFunction
 ): Promise<IUserApiResponse> {
     try {
-        const {
-            name,
-            email,
-            password,
-            phone,
-            isAdmin,
-            street,
-            apartment,
-            city,
-            zip,
-            country
-        } = req.body;
+        const { name, email, password, phone, isAdmin, address } = req.body;
         const passwordHash = bcrypt.hashSync(password, 10);
         const user: IUser = {
             name,
@@ -74,14 +67,11 @@ async function addUser(
             passwordHash,
             phone,
             isAdmin,
-            street,
-            apartment,
-            city,
-            zip,
-            country
+            address
         };
 
-        const savedUser: IUser = await new UserSchema(user).save();
+        // const savedUser: IUser = await new UserSchema(user).save();
+        const savedUser: IUser = await UserSchema.create(user);
         const users: IUser[] = await UserSchema.find();
 
         const response: IUserApiResponse = {
