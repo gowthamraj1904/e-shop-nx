@@ -3,6 +3,7 @@ import { loginRouter } from './login';
 import { signupRouter } from './signup';
 import { usersRouter } from './users';
 import { productsRouter } from './products';
+import { swaggerRouter } from './swagger';
 import * as CONSTANTS from '../constants';
 
 const router: Router = Router();
@@ -43,5 +44,6 @@ const routers: Router[] = [
 ];
 
 router.use(apiURL, routers);
+router.use(swaggerRouter);
 
 export default router;

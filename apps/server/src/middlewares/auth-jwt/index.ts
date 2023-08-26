@@ -14,7 +14,9 @@ function getApiList(): ExcludeApi[] {
     const productsImageUrlRegExp: RegExp = /\/public\/uploads(.*)/;
     const productsUrlRegExp: RegExp = /\/api\/v1\/products(.*)/;
     const categoriesUrlRegExp: RegExp = /\/api\/v1\/categories(.*)/;
+    const swaggerUrlRegExp: RegExp = /\/api-docs(.*)/;
     // const allowAll: RegExp = /(.*)/;
+
     const excludeApis: ExcludeApi[] = [
         {
             url: productsImageUrlRegExp,
@@ -28,8 +30,12 @@ function getApiList(): ExcludeApi[] {
             url: productsUrlRegExp,
             methods: ['GET', 'OPTIONS']
         },
+        {
+            url: swaggerUrlRegExp,
+            methods: ['GET', 'OPTIONS']
+        },
         `${api}/login`,
-        `${api}/signup`
+        `${api}/signup`,
         // { url: allowAll } // Allow all the APIs
     ];
 
