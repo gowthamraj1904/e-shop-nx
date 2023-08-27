@@ -59,15 +59,26 @@ async function addUser(
     next: NextFunction
 ): Promise<IUserApiResponse> {
     try {
-        const { name, email, password, phone, isAdmin, address } = req.body;
+        const {
+            name,
+            email,
+            password,
+            phone,
+            dob,
+            isAdmin,
+            address,
+            profilePhoto
+        } = req.body;
         const passwordHash = bcrypt.hashSync(password, 10);
         const user: IUser = {
             name,
             email,
             passwordHash,
             phone,
+            dob,
             isAdmin,
-            address
+            address,
+            profilePhoto
         };
 
         // const savedUser: IUser = await new UserSchema(user).save();
@@ -119,7 +130,17 @@ async function deleteUser(
     next: NextFunction
 ): Promise<IUserApiResponse> {
     try {
-        await UserSchema.findByIdAndRemove(req.params.id);
+        const { id } = req.params;
+        const isMultipleIds = id.includes(',');
+
+        if (isMultipleIds) {
+            const ids = id.split(',');
+
+            await UserSchema.deleteMany({ _id: { $in: ids } });
+        } else {
+            await UserSchema.findByIdAndRemove(id);
+        }
+
         const users: IUser[] = await UserSchema.find();
 
         const response: IUserApiResponse = {

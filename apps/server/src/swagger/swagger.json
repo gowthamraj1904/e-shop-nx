@@ -6,6 +6,9 @@
         "description": "eShop Restful webservice application",
         "license": {
             "name": "GOWTHAMRAJ"
+        },
+        "contact": {
+            "email": "gowthamraj1904@gmail.com"
         }
     },
     "servers": [
@@ -13,35 +16,49 @@
             "url": "http://localhost:3000/api/v1/"
         }
     ],
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "API for Authentication"
+        },
+        {
+            "name": "User",
+            "description": "API for users"
+        }
+    ],
     "components": {
         "schemas": {
+            "Login": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
             "User": {
                 "type": "object",
                 "required": [
-                    "id",
                     "name",
                     "email",
                     "phone",
-                    "address",
-                    "dateCreated"
+                    "address"
                 ],
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "uniqueItems": true
-                    },
                     "name": {
-                        "type": "object",
-                        "properties": {
-                            "firstName": {
-                                "type": "string"
-                            },
-                            "lastName": {
-                                "type": "string"
-                            }
-                        }
+                        "type": "string"
                     },
                     "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "dob": {
                         "type": "string"
                     },
                     "phone": {
@@ -51,20 +68,17 @@
                                 "type": "string"
                             },
                             "phone": {
-                                "type": "string"
+                                "type": "number"
                             }
                         }
                     },
                     "address": {
                         "type": "object",
                         "properties": {
-                            "doorNo": {
+                            "addressLine1": {
                                 "type": "string"
                             },
-                            "apartment": {
-                                "type": "string"
-                            },
-                            "street": {
+                            "addressLine2": {
                                 "type": "string"
                             },
                             "city": {
@@ -73,10 +87,10 @@
                             "state": {
                                 "type": "string"
                             },
-                            "zip": {
+                            "country": {
                                 "type": "string"
                             },
-                            "country": {
+                            "zipCode": {
                                 "type": "string"
                             },
                             "landmark": {
@@ -89,21 +103,26 @@
                     },
                     "profilePhoto": {
                         "type": "string"
-                    },
-                    "dateCreated": {
-                        "type": "string"
-                    },
-                    "dateModified": {
-                        "type": "string"
                     }
                 }
-            },
-            "Users": {
-                "type": "array",
-                "$ref": "#/components/schemas/User"
             }
         },
-        "securitySchemas": {
+        "requestBodies": {
+            "UserArray": {
+                "description": "List of user object",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
                 "scheme": "bearer",
@@ -111,17 +130,46 @@
             }
         }
     },
-    "security": [
-        {
-            "bearerAuth": []
-        }
-    ],
     "paths": {
+        "/login": {
+            "post": {
+                "tags": ["Authentication"],
+                "summary": "Login",
+                "description": "Login",
+                "operationId": "login",
+                "requestBody": {
+                    "description": "Login",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Login"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Login"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "tags": ["User"],
-                "description": "Returns all users",
-                "summary": "Get all the users",
+                "summary": "Get all users",
+                "description": "Returns all user details",
                 "operationId": "getUsers",
                 "parameters": [],
                 "responses": {
@@ -130,19 +178,16 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/User"
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
                                 }
                             }
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "404": {
-                        "description": "Users not found"
-                    },
-                    "500": {
-                        "description": "Internal Server Error"
+                    "400": {
+                        "description": "Invalid status value"
                     }
                 },
                 "security": [
@@ -152,13 +197,23 @@
                 ]
             }
         },
-        "/user:/id": {
-            "get": {
+        "/user": {
+            "post": {
                 "tags": ["User"],
-                "description": "Get a user",
-                "summary": "Get a user by id",
-                "operationId": "getUser",
-                "parameters": [],
+                "summary": "Create new user",
+                "description": "Create new user",
+                "operationId": "createUser",
+                "requestBody": {
+                    "description": "User",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "Successful",
@@ -170,11 +225,147 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "Unauthorized"
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "tags": ["User"],
+                "summary": "Get a users",
+                "description": "Returns a user details",
+                "operationId": "getUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of user to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid user id"
                     },
                     "404": {
-                        "description": "Users not found"
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": ["User"],
+                "summary": "Update a user",
+                "description": "Update a user",
+                "operationId": "updateUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of user to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "User",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid user ID"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": ["User"],
+                "summary": "Delete a users",
+                "description": "Delete a user",
+                "operationId": "deleteUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of user",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid user id"
+                    },
+                    "404": {
+                        "description": "User not found"
                     }
                 },
                 "security": [
@@ -184,15 +375,5 @@
                 ]
             }
         }
-    },
-    "tags": [
-        {
-            "name": "Authentication",
-            "description": "API for Authentication"
-        },
-        {
-            "name": "User",
-            "description": "API for users"
-        }
-    ]
+    }
 }

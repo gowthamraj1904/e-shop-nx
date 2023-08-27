@@ -1,16 +1,10 @@
-interface IName {
-    firstName: string;
-    lastName: string;
-}
-
 interface IAddress {
-    doorNo: string;
-    apartment: string;
-    street: string;
+    addressLine1: string;
+    addressLine2?: string;
     city: string;
     state: string;
-    zip: string;
     country: string;
+    zipCode: string;
     landmark?: string;
 }
 
@@ -21,14 +15,15 @@ interface IPhone {
 
 export interface IUser {
     id?: string;
-    name: IName;
+    name: string;
     email: string;
     password?: string;
     passwordHash?: string;
     phone: IPhone;
+    dob?: Date,
     isAdmin?: boolean;
     address: IAddress;
     profilePhoto?: null;
-    dateCreated?: Date;
-    dateModified?: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
