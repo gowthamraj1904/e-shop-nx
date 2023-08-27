@@ -4,6 +4,7 @@ import { NextFunction, Request } from 'express';
 import { IUser } from '@libs/shared/interfaces';
 import { UserSchema } from '@server/schemas';
 import { ILoginApiResponse } from '@server/models';
+import { JWT_EXPIRY } from '../../constants';
 
 async function validateUser(
     user: IUser,
@@ -14,19 +15,16 @@ async function validateUser(
     if (user && bcrypt.compareSync(password, user.passwordHash)) {
         // SECRET is custom secret code for JWT
         const secret: string = process.env.SECRET;
-        const token: string = jwt.sign(
-            // Keep these user details in the token
-            {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                isAdmin: user.isAdmin
-            },
-            secret,
-            {
-                expiresIn: '1d' // Will expire in 1 day
-            }
-        );
+        const payload: Record<string, string | boolean> = {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            isAdmin: user.isAdmin
+        };
+        const jwtOptions: Record<string, string> = {
+            expiresIn: JWT_EXPIRY
+        };
+        const token: string = jwt.sign(payload, secret, jwtOptions);
 
         // If user is authenticated, will send token in the response
         response = {

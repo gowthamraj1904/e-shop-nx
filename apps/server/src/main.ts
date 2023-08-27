@@ -14,16 +14,12 @@ const dbName: string = process.env.DB_NAME;
 
 app.use(cors(corsOptions));
 app.use(express.json({limit: '50mb'}));
-// app.use(express.urlencoded({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(express.static('public'));
-// JWT Token Authentication
 app.use(authJwt());
-// Logger
 app.use(logger);
-// Router
 app.use(router);
-// Error Handler
 app.use(errorHandler);
 
 function dbConnection(): void {

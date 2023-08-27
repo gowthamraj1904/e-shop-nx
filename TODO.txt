@@ -1,0 +1,3 @@
+Server:
+- Error Handling middleware
+- Custom Error handling API

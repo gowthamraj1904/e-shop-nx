@@ -10,15 +10,8 @@ async function signup(
 ): Promise<ISignupApiResponse> {
     try {
         let response: ISignupApiResponse;
-        const {
-            name,
-            email,
-            password,
-            phone,
-            isAdmin,
-            address,
-            profilePhoto
-        } = req.body;
+        const { name, email, password, phone, isAdmin, address, profilePhoto } =
+            req.body;
         const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
         const user: IUser = {
             name,
@@ -29,14 +22,13 @@ async function signup(
             address,
             profilePhoto
         };
-        const newUser = new UserSchema(user);
-        const savedUser: IUser = await newUser.save();
+        const newUser: IUser = await UserSchema.create(user);
 
-        if (savedUser) {
+        if (newUser) {
             response = {
                 status: 200,
                 message: 'User created successfully',
-                user: savedUser
+                user: newUser
             };
         } else {
             response = {
