@@ -30,11 +30,11 @@
                 "libs/shared/react/pages/src/index.ts"
             ],
             // Server
-            "@server/controllers": ["apps/server/src/controllers/index.ts"],
+            "@server/controllers/*": ["apps/server/src/controllers/*"],
             "@server/models": ["apps/server/src/models/index.ts"],
             "@server/schemas": ["apps/server/src/schemas/index.ts"],
             "@server/routes": ["apps/server/src/routes/index.ts"],
-            "@server/services": ["apps/server/src/services/index.ts"]
+            "@server/services/*": ["apps/server/src/services/*"]
         }
     },
     "exclude": ["node_modules", "tmp"]

@@ -11,9 +11,9 @@
                     {
                         "enforceBuildableLibDependency": true,
                         "allow": [
-                            "@server/services",
+                            "@server/services/*",
                             "@server/models",
-                            "@server/controllers",
+                            "@server/controllers/*",
                             "@server/schemas",
                             "@server/routes",
                             "@apps/admin/react/services",

@@ -1,13 +1,14 @@
 import { Router } from 'express';
-import { loginRouter } from './login';
-import { signupRouter } from './signup';
-import { usersRouter } from './users';
-import { productsRouter } from './products';
-import { swaggerRouter } from './swagger';
+import loginRouter from './login.router';
+import signupRouter from './signup.router';
+import usersRouter from './users.router';
+import categoriesRouter from './categories.router';
+import productsRouter from './products.router';
+import ordersRouter from './orders.router';
+import orderItemsRouter from './order-items.router';
+import systemStatusRouter from './system-status.router';
+import swaggerRouter from './swagger.router';
 import * as CONSTANTS from '../constants';
-
-const router: Router = Router();
-const apiURL: string = CONSTANTS.API_URL;
 
 // router.get(
 //     '/next',
@@ -36,14 +37,33 @@ const apiURL: string = CONSTANTS.API_URL;
 //     res.status(404).send('API not found');
 // });
 
-const routers: Router[] = [
-    loginRouter,
-    signupRouter,
-    usersRouter,
-    productsRouter
-];
+export default class Routes {
+    private routers: Router[];
 
-router.use(apiURL, routers);
-router.use(swaggerRouter);
+    public router: Router = Router();
 
-export default router;
+    private apiURL: string = CONSTANTS.API_URL;
+
+    private setRoutes(): void {
+        this.routers = [
+            loginRouter(),
+            signupRouter(),
+            usersRouter(),
+            categoriesRouter(),
+            productsRouter(),
+            ordersRouter(),
+            orderItemsRouter()
+        ];
+
+        this.router.use(this.apiURL, this.routers);
+        this.router.use('/status', systemStatusRouter());
+
+        if (environment.isDevEnvironment() || environment.isTestEnvironment()) {
+            this.router.use(swaggerRouter());
+        }
+    }
+
+    public init(): void {
+        this.setRoutes();
+    }
+}
